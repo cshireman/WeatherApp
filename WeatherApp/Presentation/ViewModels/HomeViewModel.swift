@@ -16,13 +16,33 @@ class HomeViewModel: ObservableObject {
     
     @Published var weather: Weather?
     @Published var location: Location?
+    @Published var searchResults: [Location] = []
     @Published var isLoading: Bool = false
+    @Published var isSearching: Bool = false
+    
+    var name: String {
+        return location?.name ?? "-"
+    }
+    
+    var temp: String {
+        if let temp = weather?.tempF {
+            return "\(temp)°"
+        }
+        
+        return "-°"
+    }
+    
+    var iconURL: URL? {
+        if let icon = weather?.condition.icon {
+            return URL(string: "https:\(icon)")
+        }
+        
+        return nil
+    }
     
     func search(query: String) async {
         do {
-            let response = try await searchUseCase.execute(query: query)
-            weather = response.current
-            location = response.location
+            searchResults = try await searchUseCase.execute(query: query)
         } catch {
             print("Error searching: \(error)")
         }
@@ -36,12 +56,20 @@ class HomeViewModel: ObservableObject {
         
         do {
             let response = try await getWeatherUseCase.execute(locationId: Int32(currentLocationID))
-            weather = response.current
             location = response.location
+            weather = response.current
         } catch {
             print("Error getting current conditions: \(error)")
         }
-
+    }
+    
+    func selectLocation(_ location: Location) {
+        guard let locationId = location.id else { return }
+        currentLocationID = Int(locationId)
+        searchResults = []
+        Task {
+            await fetchWeather()
+        }
     }
     
 }

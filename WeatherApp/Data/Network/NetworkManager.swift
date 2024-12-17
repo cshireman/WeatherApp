@@ -40,7 +40,7 @@ class NetworkManager: NetworkManagerProtocol {
     }
     
     private func parseWeatherAPIError(data: Data) -> WeatherAPIError? {
-        let error = try? JSONDecoder().decode(WeatherAPIError.self, from: data)
+        try? JSONDecoder().decode(WeatherAPIError.self, from: data)
     }
 }
 

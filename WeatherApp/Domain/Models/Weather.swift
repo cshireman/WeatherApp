@@ -12,7 +12,7 @@ struct Weather: Codable {
     let tempF: Double
     let condition: Condition
     let humidity: Double
-    let feelsLikeC: Double
-    let feelsLikeF: Double
+    let feelslikeC: Double
+    let feelslikeF: Double
     let uv: Double
 }
