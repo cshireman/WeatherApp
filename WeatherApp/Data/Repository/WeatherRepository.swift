@@ -14,7 +14,7 @@ protocol WeatherRepositoryProtocol {
 
 class WeatherRepository: WeatherRepositoryProtocol {
     @Injected(\.networkManager) var networkManager: NetworkManagerProtocol
-    private let apiKey = "abb89727897c46db957150046212312"
+    private let apiKey = "YOUR_API_KEY"
 
     func searchLocation(query: String) async throws -> [Location] {
         let endpoint = Endpoint(
