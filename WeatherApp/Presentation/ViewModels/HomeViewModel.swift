@@ -17,8 +17,9 @@ class HomeViewModel: ObservableObject {
     @Published var weather: Weather?
     @Published var location: Location?
     @Published var searchResults: [Location] = []
-    @Published var isLoading: Bool = false
-    @Published var isSearching: Bool = false
+    
+    @Published var isError: Bool = false
+    @Published var errorMessage: String = ""
     
     var name: String {
         return location?.name ?? "-"
@@ -26,7 +27,7 @@ class HomeViewModel: ObservableObject {
     
     var temp: String {
         if let temp = weather?.tempF {
-            return "\(temp)°"
+            return "\(Int(temp))°"
         }
         
         return "-°"
@@ -44,7 +45,7 @@ class HomeViewModel: ObservableObject {
         do {
             searchResults = try await searchUseCase.execute(query: query)
         } catch {
-            print("Error searching: \(error)")
+            handleError(error)
         }
     }
     
@@ -59,7 +60,7 @@ class HomeViewModel: ObservableObject {
             location = response.location
             weather = response.current
         } catch {
-            print("Error getting current conditions: \(error)")
+            handleError(error)
         }
     }
     
@@ -70,6 +71,16 @@ class HomeViewModel: ObservableObject {
         Task {
             await fetchWeather()
         }
+    }
+    
+    private func handleError(_ error: Error) {
+        if let weatherError = error as? WeatherAPIError {
+            errorMessage = weatherError.message
+        } else {
+            errorMessage = error.localizedDescription
+        }
+        
+        isError = true
     }
     
 }

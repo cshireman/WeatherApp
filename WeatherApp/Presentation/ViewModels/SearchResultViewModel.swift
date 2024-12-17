@@ -29,7 +29,7 @@ class SearchResultViewModel: ObservableObject {
                     let response = try await weatherRepository.getWeather(for: locationId)
                     let weather = response.current
                     self.weather = weather
-                    temp = "\(weather.tempF)°"
+                    temp = "\(Int(weather.tempF))°"
                     iconURL = URL(string: "https:\(weather.condition.icon)")
                 } catch {
                     print(error)

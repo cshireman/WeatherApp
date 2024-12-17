@@ -14,11 +14,11 @@ struct SearchResultView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(viewModel.name)
-                    .font(.custom("Poppins-Bold", size: 20))
+                    .font(.custom("Poppins-Regular", size: 20))
                     .foregroundStyle(Color.bodyText)
                 
                 Text(viewModel.temp)
-                    .font(.custom("Poppins-Bold", size: 60))
+                    .font(.custom("Poppins-Regular", size: 60))
                     .foregroundStyle(Color.bodyText)
             }
             .padding()

@@ -9,14 +9,12 @@ import SwiftUI
 
 struct SearchField: View {
     @Binding var searchText: String
-    @FocusState var isFocused: Bool
     
     var onSubmit: () -> Void = {}
     
     var body: some View {
         HStack {
             TextField("", text: $searchText, prompt: Text("Search Location"))
-                .focused($isFocused)
                 .foregroundStyle(Color.bodyText)
                 .onSubmit {
                     onSubmit()
